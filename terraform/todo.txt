@@ -1,0 +1,22 @@
+
+
+# Things to do
+
+# Vault
+- edit vaultuserdata.sh with https://dzone.com/articles/using-vault-with-mysql
+- create an s3 bucket for vault data storage w/ limited access policy
+- write a web application stored in github that pulls secrets from vault and connects to db
+- send vault IP (or alb url) to web servers w/ ssh provisoner
+- ASG & ALB vault if we have time
+
+# Consul
+- Check into Consul gui
+
+# Security
+- figure out how to allow ssh keys to pass through
+- consider disabling bastion access to any server by default
+- and/or, disallow any ssh into bastion host by defualt
+
+# Logs
+- configure cloudwatchLogs IAM role for web servers
+- configure cloudwatchLogs for web servers
