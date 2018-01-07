@@ -5,15 +5,19 @@
 	<div class=jumbotron>
 		<h1>Hello World!</h1>
 		<p>
-			This Flask application was built in a Docker container and deployed to
-			AWS ECS using Travis Continous Integration Server.
+			This Flask application was built in as part of a 
+			<a href=http://cloudshiftstrategies.com target=new>Cloud Shift Strategies</a> 
+			Infrastructure as Code Lab. The AWS infrastructure was deployed using
+			<a href=http://terraform.io target=new>Hashicorp Terraform</a> and
+			Secrets are protected and managed using
+			<a href=http://vaultproject.ioi target=new>Hashicorp Vault</a>
 		</p>
 	</div>
 
 	<div class=row>
 		<div class=col-md-3>
 			<div class=thumbnail>
-				<a href=http://flask.pocoo.org/>
+				<a href=http://flask.pocoo.org/ target=new>
 					<img src={{ config.STATIC_URL }}flask.png width=250
 						style="margin-top:20px;">
 				</a>
@@ -26,38 +30,41 @@
 
 		<div class=col-md-3>
 			<div class=thumbnail>
-				<a href=https://www.docker.com/>
-					<img src={{ config.STATIC_URL }}docker.png width=260>
+				<a href=https://terraform.io/ target=new>
+					<img src=https://www.datocms-assets.com/2885/1506457071-blog-terraform-list.svg width=175>
 				</a>
 				<p style="margin-top:1em;">
-					Docker is an open platform for developers and sysadmins to build,
-					ship, and run distributed applications, whether on laptops, data
-					center VMs, or the cloud.
+					Terraform is a tool for building, changing, and versioning infrastructure safely
+					and efficiently. Terraform can manage existing and popular service providers as well
+					as custom in-house solutions.
 				</p>
 			</div>
 		</div>
 
 		<div class=col-md-3>
 			<div class=thumbnail>
-				<a href=http://travis-ci.org>
-					<img src={{ config.STATIC_URL }}travis.png width=160>
+				<a href=https://www.vaultproject.io target=new>
+					<img src=https://www.datocms-assets.com/2885/1506457082-blog-vault-list.svg width=175>
 				</a>
 				<p style="margin-top:1em;">
-					Travis CI is a hosted, distributed continuous integration service
-					used to build and test software projects hosted at GitHub.
+					Vault secures, stores, and tightly controls access to tokens, passwords, certificates,
+					API keys, and other secrets in modern computing. Vault handles leasing, key revocation,
+				 	key rolling, and auditing. Through a unified API, users can access an encrypted 
+					Key/Value store and network encryption-as-a-service, or generate AWS IAM/STS 
+					credentials, SQL/NoSQL databases, X.509 certificates, SSH credentials, and more.
 				</p>
 			</div>
 		</div>
 
 		<div class=col-md-3>
 			<div class=thumbnail>
-				<a href=https://aws.amazon.com/ecs/>
-					<img src={{ config.STATIC_URL }}ecs.png width=180>
+				<a href=https://aws.amazon.com/ec2/ target=new>
+					<img src=https://signalfx-82c9.kxcdn.com/wp-content/uploads/EC2-logo-full.jpg width=175>
 				</a>
 				<p style="margin-top:1em;">
-					Amazon EC2 Container Service (ECS) allows you to easily run and
-					manage Docker-enabled applications across a cluster of Amazon EC2
-					instances.
+					Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides secure,
+					resizable compute capacity in the cloud. It is designed to make web-scale cloud
+				 	computing easier for developers.
 				</p>
 			</div>
 		</div>

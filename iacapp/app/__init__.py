@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template
 app = Flask(__name__)
 
+from os import environ
+
 app.config.from_object('config')
 
 @app.route("/")
@@ -11,6 +13,25 @@ def index():
     """
 
     return render_template('index.html')
+
+@app.route("/vault")
+def vault():
+    """
+    A Web Page to demonstrate vault credentials
+    """
+    data= {}
+    data["VAULT_NONCE"]=''
+    data["VAULT_ADDR"]=''
+    if environ.has_key('VAULT_NONCE'): data["VAULT_NONCE"] = environ['VAULT_NONCE']
+    if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
+    return render_template('vault.html', data=data)
+
+@app.route("/database")
+def database():
+    """
+    A Web Page to test database connectivity
+    """
+    return render_template('database.html')
 
 @app.route("/loadgen")
 def loadgen():

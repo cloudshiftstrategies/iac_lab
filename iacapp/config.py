@@ -2,17 +2,20 @@
 import os
 
 # Title of the site
-SITE_TITLE = 'My Flask Docker Lab'
+SITE_TITLE = 'Infrastructure as Code Lab'
 # The URL for static files/images
 STATIC_URL = 'https://s3-us-west-2.amazonaws.com/flaskdockerlab-static/'
 # The name of the
 FAV_ICON = STATIC_URL + 'docker-icon.png'
+FAV_ICON = 'https://chocolatey.org/content/packageimages/terraform.0.10.8.png'
 
 # Pages to show on the nav menu (provide a url or route)
 PAGES=[
     {'title':'Lab Blog',
-        'url':'https://www.cloudshiftstrategies.com/flaskdockerlab.html'},
+        'url':'https://www.cloudshiftstrategies.com/iaclab.html'},
     {'title':'Load Gen','route':'loadgen'},
+    {'title':'Vault Credentials','route':'vault'},
+    {'title':'Database','route':'database'},
     ]
 
 # Bootstrap CSS files to include in each page included in ./app/templates/base.html

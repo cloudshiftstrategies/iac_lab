@@ -20,7 +20,7 @@ yum -y install httpd jq python-pip mysql mysql-devel python-devel git
 # put the web code in place
 cd /tmp
 git clone http://github.com/peterb154/iac_lab
-mv /tmp/iac_app/iacapp/* /var/www/html
+mv /tmp/iac_lab/iacapp/* /var/www/html
 pip install -r /var/www/html/requirements.txt
 rm -rf /tmp/iac_lab
 
