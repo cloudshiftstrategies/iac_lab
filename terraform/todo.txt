@@ -88,7 +88,7 @@ vault write mysql/config/connection \
     connection_url="vault:${MYSQL_VAULT_PASS}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/" \
     allowed_roles="readonly,readwrite"
 
-# configure the lease for the mysql passwords
+# configure the 1 hour lease for the mysql passwords
 vault write mysql/config/lease lease=1h lease_max=12h
 
 # create a readonly role for our web applications
