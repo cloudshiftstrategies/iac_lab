@@ -16,14 +16,13 @@ yum -y update
 
 # Install software
 yum -y install httpd jq python-pip mysql mysql-devel python-devel git
-pip install flask hvac requests mysqlclient boto3
 
-# drop a couple of files in the root of the site we can use to validate
-#echo `hostname` > /var/www/html/index.php
-#echo "<br><a href=phpinfo.php>phpinfo.php</a>" >> /var/www/html/index.php
-#echo "<br><?php print getenv('VAULT_NONCE')?>" >> /var/www/html/index.php
-#echo "<br><?php print getenv('VAULT_ADDR')?>" >> /var/www/html/index.php
-#echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+# put the web code in place
+cd /tmp
+git clone http://github.com/peterb154/iac_lab
+mv /tmp/iac_app/iacapp/* /var/www/html
+pip install -r /var/www/html/requirements.txt
+rm -rf /tmp/iac_lab
 
 # Install Vault
 wget https://releases.hashicorp.com/vault/0.9.1/vault_0.9.1_linux_amd64.zip

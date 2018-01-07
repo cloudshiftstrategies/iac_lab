@@ -1,0 +1,5 @@
+flask
+mysqlclient
+hvac
+requests
+boto3

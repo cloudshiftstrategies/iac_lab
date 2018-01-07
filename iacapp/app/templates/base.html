@@ -1,0 +1,72 @@
+<head>
+	<link rel="icon" href={{config.FAV_ICON}}>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title> {{ config.SITE_TITLE }} </title>
+	<!-- Include several stylesheets to improve the look and feel of our web page -->
+	{% for css_url in config.CSS_INCLUDES %}
+		<link rel="stylesheet" href="{{ css_url }}">
+	{% endfor %}
+	<!-- Include several javascript scripts to improve the dynamic feel of our web page -->
+	{% for js_url in config.JS_INCLUDES %}
+		<script src="{{ js_url }}"></script>
+	{% endfor %}
+</head>
+
+<body style="padding-top:70px;">
+
+<!--header-->
+<!--<div class="navbar navbar-inverse navbar-fixed-top bg-primary"-->
+<div class="navbar navbar-default navbar-fixed-top"
+		role="navigation">
+	<div class=container>
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href={{ url_for('index') }} class="navbar-brand">
+				<img class="img-responsive pull-left gap-right"
+					src="{{ config.FAV_ICON }}"
+					style="position:relative;top:-40%;height:40px;padding-right:10px;">
+				{{ config.SITE_TITLE }}</a>
+		</div>
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav">
+				<!-- Page Navigation -->
+				{% for page in config.PAGES %}
+					{% if page['route'] %}
+					<li><a href="{{ url_for(page['route']) }}">
+							{{ page["title"] }}</a></li>
+					{% else %}
+						<li><a href="{{ page["url"] }}">
+								{{ page["title"] }}</a></li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!--content-->
+{% block content %}{% endblock %}
+
+<!--footer-->
+<div class=row style="width: 100%; height: 60px; background-color: #f5f5f5;">
+	<div class=col-md-1></div>
+	<div class=col-md-2 style="font-size:large;padding-top:15px">
+		<p class=text-muted>{{config.SITE_TITLE}}</a>
+	</div>
+	<div class=col-md-8 style="font-size:small;padding-top:10px">
+		<p class=text-muted>This site was created with code developed by
+		<a href=https://www.cloudshiftstrategies.com>Cloud Shift Stragegies</a> 
+		For detailed lab instructuons, please see the <a href={{config.LAB_BLOG_URL}}>Flask on Docker Blog</a></p>
+	</div>
+	<div class=col-md-1></div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class=container>
+
+	<div class=jumbotron>
+		<h1>Hello World!</h1>
+		<p>
+			This Flask application was built in a Docker container and deployed to
+			AWS ECS using Travis Continous Integration Server.
+		</p>
+	</div>
+
+	<div class=row>
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=http://flask.pocoo.org/>
+					<img src={{ config.STATIC_URL }}flask.png width=250
+						style="margin-top:20px;">
+				</a>
+				<p style="margin-top:2em;">
+					Flask is a microframework for Python based on Werkzeug, Jinja 2
+					and good intentions.
+				</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=https://www.docker.com/>
+					<img src={{ config.STATIC_URL }}docker.png width=260>
+				</a>
+				<p style="margin-top:1em;">
+					Docker is an open platform for developers and sysadmins to build,
+					ship, and run distributed applications, whether on laptops, data
+					center VMs, or the cloud.
+				</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=http://travis-ci.org>
+					<img src={{ config.STATIC_URL }}travis.png width=160>
+				</a>
+				<p style="margin-top:1em;">
+					Travis CI is a hosted, distributed continuous integration service
+					used to build and test software projects hosted at GitHub.
+				</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=https://aws.amazon.com/ecs/>
+					<img src={{ config.STATIC_URL }}ecs.png width=180>
+				</a>
+				<p style="margin-top:1em;">
+					Amazon EC2 Container Service (ECS) allows you to easily run and
+					manage Docker-enabled applications across a cluster of Amazon EC2
+					instances.
+				</p>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+{% endblock %}
