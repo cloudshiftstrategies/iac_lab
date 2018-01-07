@@ -1,5 +1,7 @@
 #!/bin/env python
+# auth.py
 
+from app import app
 from requests import get
 from os import environ
 
@@ -10,8 +12,11 @@ def getDbCreds(VAULT_ROLE="web-role"):
 
     # Get the VAULT_NONCE ENV variable (should be set in apache SetEnv for us
     # during server build in userdata.sh)
-    if os.environ.has_key('VAULT_NONCE'): VAULT_NONCE = os.environ['VAULT_NONCE']
-    if os.environ.has_key('VAULT_ADDR'): VAULT_ADDR = os.environ['VAULT_ADDR']
+    if environ.has_key('VAULT_NONCE'): VAULT_NONCE = environ['VAULT_NONCE']
+    if environ.has_key('VAULT_ADDR'): VAULT_ADDR = environ['VAULT_ADDR']
+
+    print "VAULT_NONCE: %s" %VAULT_NONCE
+    print "VAULT_ADDR: %s" %VAULT_ADDR
 
     # If the vault server wasnt set in the EnvVars, go try to get it from the Ec2
     # tag VAULT_IP
@@ -40,18 +45,20 @@ def getDbCreds(VAULT_ROLE="web-role"):
         'pkcs7': PKCS7,
         'nonce': VAULT_NONCE,
     }
-    result = client.auth('/v1/auth/aws-ec2/login', json=auth_params)
+    result = vaultClient.auth('/v1/auth/aws-ec2/login', json=auth_params)
 
     creds = {}
     # Get database information from vault
-    request = (client.read('secret/mysql'))
+    request = (vaultClient.read('secret/mysql'))
     creds['db_host'] = request['data']['host']
     creds['db_port'] = request['data']['port']
     creds['db_name'] = request['data']['database']
 
-    request = (client.read('mysql/creds/readwrite'))
+    request = (vaultClient.read('mysql/creds/readwrite'))
     creds['db_username'] = request['data']['username']
     creds['db_password'] = request['data']['password']
+    creds['lease_id'] = request['lease_id']
+    creds['lease_duration'] = request['lease_duration']
 
     return creds
 
@@ -62,7 +69,7 @@ def dbLoginTest(creds):
         host   = creds['db_host'],
         user   = creds['db_username'],
         passwd = creds['db_password'],
-        db     = creds['db_database'])
+        db     = creds['db_name'])
 
     # create a database cursor object
     cur = db.cursor()

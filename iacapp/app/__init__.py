@@ -1,8 +1,12 @@
+#!/bin/env python
+# __init__.py
+
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
 
 from os import environ
+from auth import getDbCreds, dbLoginTest
 
 app.config.from_object('config')
 
@@ -24,15 +28,26 @@ def vault():
     data["VAULT_ADDR"]=''
     if environ.has_key('VAULT_NONCE'): data["VAULT_NONCE"] = environ['VAULT_NONCE']
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
-    creds = auth.getDbCreds()
-    return render_template('vault.html', data=data, creds=creds)
+    creds = getDbCreds()
+    testResult = dbLoginTest(creds)
+    return render_template('vault.html', data=data, creds=creds, testResult=testResult)
 
 @app.route("/database")
 def database():
     """
     A Web Page to test database connectivity
     """
-    return render_template('database.html')
+    creds = getDbCreds()
+    import MySQLdb
+    db = MySQLdb.connect(
+        host  =creds['db_host'],
+        user  =creds['db_username'],
+        passwd=creds['db_password'],
+        db    =creds['db_name'])
+    cursor = db.cursor()
+    cursor.execute("SHOW DATABASES;")
+    data = cursor.fetchall()
+    return render_template('database.html', data=data)
 
 @app.route("/loadgen")
 def loadgen():

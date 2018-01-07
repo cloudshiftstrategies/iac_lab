@@ -3,3 +3,4 @@ mysqlclient
 hvac
 requests
 boto3
+sqlalchemy

@@ -3,10 +3,28 @@
 <div class=container>
 
 	<div class=jumbotron>
-		<h1>Database Connectivity Test</h1>
-		<p>
-			the test results
+		<h1>Database Query Test</h1>
+		<p>This page shows the authenticaed result of the query "SHOW DATABASES;"
+		Its not very interesting from an application perspective, but powerful considering
+		that the passwords to access this database are not stored on the web server.
 		</p>
 	</div>
-
+	<div class=row>
+		<div class="col col-md-2"></div>
+		<div class="col col-md-8">
+			<table class="table table-striped">
+				<thead><th>Table Name</th></thead>
+				<tbody>
+				{% for record in data %}
+					<tr>
+						{% for element in record %}
+							<td>{{ element }}</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col col-md-2"></div>
+	</div>
 {% endblock %}
