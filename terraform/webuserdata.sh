@@ -14,15 +14,16 @@ yum -y update
 #systemctl daemon-reload
 #service awslogs restart
 
-# Install apache
-yum -y install httpd jq php php-mysql
+# Install software
+yum -y install httpd jq python-pip mysql mysql-devel python-devel git
+pip install flask hvac requests mysqlclient boto3
 
 # drop a couple of files in the root of the site we can use to validate
-echo `hostname` > /var/www/html/index.php
-echo "<br><a href=phpinfo.php>phpinfo.php</a>" >> /var/www/html/index.php
-echo "<br><?php print getenv('VAULT_NONCE')?>" >> /var/www/html/index.php
-echo "<br><?php print getenv('VAULT_ADDR')?>" >> /var/www/html/index.php
-echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+#echo `hostname` > /var/www/html/index.php
+#echo "<br><a href=phpinfo.php>phpinfo.php</a>" >> /var/www/html/index.php
+#echo "<br><?php print getenv('VAULT_NONCE')?>" >> /var/www/html/index.php
+#echo "<br><?php print getenv('VAULT_ADDR')?>" >> /var/www/html/index.php
+#echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 
 # Install Vault
 wget https://releases.hashicorp.com/vault/0.9.1/vault_0.9.1_linux_amd64.zip
@@ -35,11 +36,20 @@ export VAULT_IP=`aws ec2 describe-tags --filters Name=resource-id,Values="${INST
 export VAULT_ADDR="http://${VAULT_IP}:8200"
 export VAULT_NONCE=`vault write /auth/aws-ec2/login role=web-role pkcs7="$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/pkcs7)" | grep token_meta_nonce | awk '{print$2}' | sed s/\"//g`
 
-# Set VAULT env variables in the apache 
-cat <<EOF > /etc/httpd/conf.d/host.conf 
+# Set VAULT env variables and setup apache to serve our app
+cat <<EOF > /etc/httpd/conf.d/iacapp.conf 
 <VirtualHost *:80>
 	SetEnv VAULT_NONCE ${VAULT_NONCE}
 	SetEnv VAULT_ADDR ${VAULT_ADDR}
+	WSGIDaemonProcess iacapp user=apache group=apache threads=5 home=/var/www/html/
+	WSGIScriptAlias / /var/www/html/iacapp.wsgi
+	<directory /var/www/html>
+		WSGIProcessGroup iacapp
+		WSGIApplicationGroup %{GLOBAL}
+		WSGIScriptReloading On
+		Order deny,allow
+		Allow from all
+	</directory>
 </VirtualHost>
 EOF
 
