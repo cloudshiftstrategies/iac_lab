@@ -1,59 +1,77 @@
 #!/bin/env python
 
-import hvac, requests, MySQLdb, boto3
+from requests import get
+from os import environ
 
-nonce = "10933259-e424-d3b0-cb69-46d94a30ce4d"
+def getDbCreds(VAULT_ROLE="web-role"):
 
-# Get metadata about this instance
-instance_id = requests.get("http://169.254.169.254/latest/meta-data/instance-id").text
-region = requests.get(" http://169.254.169.254/latest/meta-data/placement/availability-zone").text[:-1]
-pkcs7 = requests.get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
+    VAULT_ADDR=""
+    VAULT_NONCE=""
 
-# Get the IP aadress of the vault server, which should be stored in the VaultIP tag for this instance
-ec2 = boto3.resource('ec2', region_name=region)
-ec2instance = ec2.Instance(instance_id)
-for tag in ec2instance.tags:
-	if tag["Key"] == "VaultIP":
-		VAULT_IP = tag["Value"]
-VAULT_ADDR='http://%s:8200' %VAULT_IP
+    # Get the VAULT_NONCE ENV variable (should be set in apache SetEnv for us
+    # during server build in userdata.sh)
+    if os.environ.has_key('VAULT_NONCE'): VAULT_NONCE = os.environ['VAULT_NONCE']
+    if os.environ.has_key('VAULT_ADDR'): VAULT_ADDR = os.environ['VAULT_ADDR']
 
-#VAULT_TOKEN=`vault write /auth/aws-ec2/login role=web-role pkcs7="$(curl http://169.254.169.254/latest/dynamic/instance-identity/pkcs7)" nonce="10933259-e424-d3b0-cb69-46d94a30ce4d" | egrep "^token " | awk '{print$2}'`
+    # If the vault server wasnt set in the EnvVars, go try to get it from the Ec2
+    # tag VAULT_IP
+    if VAULT_ADDR == "":
+        META_ADDR="http://169.254.169.254/latest/meta-data"
+        instance_id = get(META_ADDR + "/instance-id").text
+        region = get(META_ADDR + "/placement/availability-zone").text[:-1]
+        from boto3 import resource
+        ec2 = resource('ec2', region_name=region)
+        ec2instance = ec2.Instance(instance_id)
+        for tag in ec2instance.tags:
+            if tag["Key"] == "VaultIP":
+                    VAULT_IP = tag["Value"]
+        VAULT_ADDR='http://%s:8200' %VAULT_IP
 
-client = hvac.Client(url=VAULT_ADDR)
-#client.token = '17f16284-cad1-1e30-025b-a4f5a0b80de6'
+    # Initiate a vault client
+    import hvac
+    vaultClient = hvac.Client(url=VAULT_ADDR)
 
-# Authenticate the client to vault
-params = {
-    'role': 'web-role',
-    'pkcs7': pkcs7,
-    'nonce': nonce,
-}
-result = client.auth('/v1/auth/aws-ec2/login', json=params)
+    # Get the PKCS7 signature from this EC2 instance's metadata
+    PKCS7 = get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
 
-# Get database information from vault
-request = (client.read('secret/mysql'))
-host = request['data']['host']
-port = request['data']['port']
-database = request['data']['database']
+    # Authenticate the client to vault
+    auth_params = {
+        'role' : VAULT_ROLE,
+        'pkcs7': PKCS7,
+        'nonce': VAULT_NONCE,
+    }
+    result = client.auth('/v1/auth/aws-ec2/login', json=auth_params)
 
-request = (client.read('mysql/creds/readwrite'))
-username = request['data']['username']
-password = request['data']['password']
+    creds = {}
+    # Get database information from vault
+    request = (client.read('secret/mysql'))
+    creds['db_host'] = request['data']['host']
+    creds['db_port'] = request['data']['port']
+    creds['db_name'] = request['data']['database']
 
-# Connect to the mysql database
-db = MySQLdb.connect(host=host, 
-                     user=username,
-                     passwd=password,
-                     db=database)
+    request = (client.read('mysql/creds/readwrite'))
+    creds['db_username'] = request['data']['username']
+    creds['db_password'] = request['data']['password']
 
-# create a database cursor object
-cur = db.cursor()
+    return creds
 
-# execute a query
-cur.execute("SHOW DATABASES;")
+def dbLoginTest(creds):    
+    # Connect to the mysql database
+    import MySQLdb
+    db = MySQLdb.connect(
+        host   = creds['db_host'],
+        user   = creds['db_username'],
+        passwd = creds['db_password'],
+        db     = creds['db_database'])
 
-# print all the first cell of all the rows
-for row in cur.fetchall():
-    print row[0]
+    # create a database cursor object
+    cur = db.cursor()
 
-db.close()
+    # execute a query return 1 if it works
+    try:
+        cur.execute("SHOW DATABASES;")
+        db.close()
+        return 0
+    except:
+        db.close()
+        return 1

@@ -4,8 +4,13 @@
 
 	<div class=jumbotron>
 		<h1>Vault Credentials</h1>
-		<p> VAULT_ADDR : {{ data["VAULT_ADDR"] }} </p>
+		<p> VAULT_ADDR  : {{ data["VAULT_ADDR"] }} </p>
 		<p> VAULT_NONCE : {{ data["VAULT_NONCE"] }} </p>
+		<p> DB_HOST     : {{ creds["db_host"] }} </p>
+		<p> DB_NAME     : {{ creds["db_name"] }} </p>
+		<p> DB_PORT     : {{ creds["db_port"] }} </p>
+		<p> DB_USERNAME : {{ creds["db_username"] }} </p>
+		<p> DB_PASSWORD : {{ creds["db_password"] }} </p>
 	</div>
 
 {% endblock %}

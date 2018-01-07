@@ -24,7 +24,8 @@ def vault():
     data["VAULT_ADDR"]=''
     if environ.has_key('VAULT_NONCE'): data["VAULT_NONCE"] = environ['VAULT_NONCE']
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
-    return render_template('vault.html', data=data)
+    creds = auth.getDbCreds()
+    return render_template('vault.html', data=data, creds=creds)
 
 @app.route("/database")
 def database():
