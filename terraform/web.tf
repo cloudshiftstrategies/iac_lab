@@ -77,9 +77,9 @@ resource "aws_security_group" "alb_sg" {
 resource "aws_launch_configuration" "web_lc" {
 	name_prefix			= "${var.projectName}-${var.stageName}-lc-"
 	image_id			= "${var.webAmi}"
-	security_groups		= ["${aws_security_group.app_sg.id}"]
+	security_groups		= ["${aws_security_group.web_sg.id}"]
 	instance_type		= "${var.webInstanceType}"
-	#iam_instance_profile = #TODO, create cloudwatchLogs IAM role
+	iam_instance_profile = "${aws_iam_instance_profile.web_profile.name}"
 	user_data			= "${file("webuserdata.sh")}"
 	key_name			= "${aws_key_pair.public_key.key_name}"
 	lifecycle {
@@ -121,6 +121,11 @@ resource "aws_autoscaling_group" "web_asg" {
 		value               = "${var.costCenter}"
 		propagate_at_launch = true
 	}
+	tag {
+		key                 = "VaultIP"
+		value               = "${aws_instance.vault.private_ip}"
+		propagate_at_launch = true
+	}
 
 }
 
@@ -155,16 +160,74 @@ resource "aws_cloudwatch_metric_alarm" "bat" {
 }
 
 ###########################################################
+# Web Instance IAM role
+
+# Create an IAM role we can attach to an EC2 instance
+resource "aws_iam_role" "web_role" {
+    name = "${var.projectName}-${var.stageName}-webinst-role"
+	description = "Role that allows EC2 instance to write to cloudwatch logs and read tags"
+	assume_role_policy = <<EOF
+{
+	"Version":"2012-10-17",
+	"Statement":[
+		{
+			"Sid":"",
+			"Effect":"Allow",
+			"Principal":{"Service":"ec2.amazonaws.com"},
+			"Action":"sts:AssumeRole"
+		}
+	]
+}
+EOF
+}
+
+# Attach a policy to the web role that allows it to write logs
+resource "aws_iam_role_policy" "web_policy" {
+    name = "${var.projectName}-${var.stageName}-webinst-policy"
+	role = "${aws_iam_role.web_role.id}"
+	policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+		"Effect": "Allow",
+		"Action": [
+			"logs:CreateLogGroup",
+			"logs:CreateLogStream",
+			"logs:PutLogEvents",
+			"logs:DescribeLogStreams"
+		],
+		"Resource": [ "arn:aws:logs:*:*:*" ]
+	},{
+		"Effect": "Allow",
+		"Action": [
+			"ec2:DescribeTags",
+			"ec2:DescribeInstances"
+		],
+		"Resource": ["*"]
+	}
+ ]
+}
+EOF
+}
+
+# Create an IAM instance profile that allows us to attach IAM role to EC2 instance
+resource "aws_iam_instance_profile" "web_profile" {
+    name = "${var.projectName}-${var.stageName}-web-profile"
+	role = "${aws_iam_role.web_role.name}"
+}
+
+###########################################################
 # App Layer Security Group
 
 # Security Group that allows ssh access from the bastion host and www load balancer
 # Note: using a security group definition where rules are defined seperately, so that
 #       if we are using a bastion.tf file, we can add the bastion host rule there.
-resource "aws_security_group" "app_sg" {
-	name = "${var.projectName}-${var.stageName}-app-sg"
+resource "aws_security_group" "web_sg" {
+	name = "${var.projectName}-${var.stageName}-web-sg"
 	vpc_id = "${aws_vpc.vpc.id}"
 	tags {
-		Name		= "${var.projectName}-${var.stageName}-app-sg"
+		Name		= "${var.projectName}-${var.stageName}-web-sg"
 		Project		= "${var.projectName}",
 		Stage		= "${var.stageName}"
 		CostCenter	= "${var.costCenter}"
@@ -178,7 +241,7 @@ resource "aws_security_group_rule" "web_sg_80in" {
 	to_port         = 80
 	protocol        = "tcp"
 	cidr_blocks		= ["${var.publicCidrs}"]
-	security_group_id = "${aws_security_group.app_sg.id}"
+	security_group_id = "${aws_security_group.web_sg.id}"
 }
 
 # Rule to allow web servers to talk out to the world
@@ -188,7 +251,7 @@ resource "aws_security_group_rule" "web_sg_ALLout" {
 	to_port         = 0
 	protocol        = "-1"
 	cidr_blocks		= ["0.0.0.0/0"]
-	security_group_id = "${aws_security_group.app_sg.id}"
+	security_group_id = "${aws_security_group.web_sg.id}"
 }
 
 # Note: if bastion.tf host is defined, the rule to allow it's ssh access is

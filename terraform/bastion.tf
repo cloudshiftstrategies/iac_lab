@@ -56,14 +56,14 @@ resource "aws_security_group" "bastion_sg" {
    }
 }
 
-# Add rule to the app_sg security group to allow the bastion host to ssh in
+# Add rule to the web_sg security group to allow the bastion host to ssh in
 resource "aws_security_group_rule" "web_sg_Bastion22in" {
     type            = "ingress"
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
     cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
-    security_group_id = "${aws_security_group.app_sg.id}"
+    security_group_id = "${aws_security_group.web_sg.id}"
 }
 
 # Add rule to the vault_sg security group to allow the bastion host to ssh in
@@ -71,6 +71,16 @@ resource "aws_security_group_rule" "vault_sg_Bastion22in" {
     type            = "ingress"
     from_port       = 22
     to_port         = 22
+    protocol        = "tcp"
+    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_group_id = "${aws_security_group.vault_sg.id}"
+}
+
+# Add rule to the vault_sg security group to allow the bastion host to vault in
+resource "aws_security_group_rule" "vault_sg_Bastion8200in" {
+    type            = "ingress"
+    from_port       = 8200
+    to_port         = 8200
     protocol        = "tcp"
     cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
     security_group_id = "${aws_security_group.vault_sg.id}"

@@ -38,13 +38,13 @@ variable "publicSshKey" {
 
 # Autoscaling Group
 variable "tgtGrpDesiredSize" {
-	default = "3"
+	default = "2"
 }
 variable "tgtGrpMinSize" {
-	default = "3"
+	default = "2"
 }
 variable "tgtGrpMaxSize" {
-	default = "4"
+	default = "2"
 }
 variable "healthCheckGracePeriod" {
 	#default = "300" # a sane number
@@ -77,7 +77,8 @@ variable "databaseCidrs" {
 # Vault Server
 
 variable "vaultAmi" {
-	default = "ami-0e6d4c6b" # vault-consul-amazon-linux-2017-06-22T06-04-21Z
+	default = "ami-e97c548c" # standard AWS Linux 2
+	# default = "ami-0e6d4c6b" # vault-consul-amazon-linux-2017-06-22T06-04-21Z
 }
 variable "vaultInstanceType" {
 	default = "t2.micro"
@@ -93,7 +94,7 @@ variable "dbRootPass" {
 	default = "password"
 }
 variable "dbInstanceCount" {
-	default = "3"
+	default = "1"
 }
 variable "dbInstanceType" {
 	default = "db.t2.small"
