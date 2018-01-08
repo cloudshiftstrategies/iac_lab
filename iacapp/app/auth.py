@@ -9,12 +9,21 @@ def getDbCreds(VAULT_ROLE="web-role"):
 
     VAULT_ADDR=""
     VAULT_NONCE=""
+    creds = {}
+    creds['db_host'] = ""
+    creds['db_port'] = ""
+    creds['db_name'] = ""
+    creds['db_username'] = ""
+    creds['db_password'] = ""
+    creds['lease_id'] = ""
+    creds['lease_duration'] = 0
+
 
     # Get the PKCS7 signature from this EC2 instance's metadata
     try:
         PKCS7 = get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
     except:
-        return 1
+        return creds
 
     # Get the VAULT_NONCE ENV variable (should be set in apache SetEnv for us
     # during server build in userdata.sh)
@@ -52,9 +61,8 @@ def getDbCreds(VAULT_ROLE="web-role"):
     try:
         result = vaultClient.auth('/v1/auth/aws-ec2/login', json=auth_params)
     except:
-        return 1
+        return creds
 
-    creds = {}
     # Get database information from vault
     request = (vaultClient.read('secret/mysql'))
     creds['db_host'] = request['data']['host']
@@ -72,7 +80,7 @@ def getDbCreds(VAULT_ROLE="web-role"):
 def dbLoginTest(creds):    
     # Connect to the mysql database
     import MySQLdb
-    if creds == 1:
+    if creds['db_host'] == "":
         return 1
     db = MySQLdb.connect(
         host   = creds['db_host'],

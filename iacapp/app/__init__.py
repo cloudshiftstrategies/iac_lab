@@ -30,10 +30,7 @@ def vault():
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
     creds = getDbCreds()
     testResult = dbLoginTest(creds)
-    if creds == 1 or testResult ==1:
-        return render_template('error.html')
-    else:
-        return render_template('vault.html', data=data, creds=creds, testResult=testResult)
+    return render_template('vault.html', data=data, creds=creds, testResult=testResult)
 
 @app.route("/database")
 def database():
@@ -41,7 +38,7 @@ def database():
     A Web Page to test database connectivity
     """
     creds = getDbCreds()
-    if creds == 1 :
+    if creds['db_host'] == "":
         return render_template('error.html')
     import MySQLdb
     db = MySQLdb.connect(
