@@ -39,13 +39,17 @@ def getDbCreds(VAULT_ROLE="web-role"):
     # Get the PKCS7 signature from this EC2 instance's metadata
     PKCS7 = get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
 
+
     # Authenticate the client to vault
     auth_params = {
         'role' : VAULT_ROLE,
         'pkcs7': PKCS7,
         'nonce': VAULT_NONCE,
     }
-    result = vaultClient.auth('/v1/auth/aws-ec2/login', json=auth_params)
+    try:
+        result = vaultClient.auth('/v1/auth/aws-ec2/login', json=auth_params)
+    except:
+        return 1
 
     creds = {}
     # Get database information from vault
@@ -65,6 +69,8 @@ def getDbCreds(VAULT_ROLE="web-role"):
 def dbLoginTest(creds):    
     # Connect to the mysql database
     import MySQLdb
+    if creds == 1:
+        return 1
     db = MySQLdb.connect(
         host   = creds['db_host'],
         user   = creds['db_username'],

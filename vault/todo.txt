@@ -79,7 +79,7 @@ yum install -y mysql
 # Create a mysql user/pass for vault that has ALL privs (including GRANT) on our db
 mysql -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASS -Bsse \
 	"CREATE USER ${MYSQL_VAULT_USER}@'${VAULT_IP}' IDENTIFIED BY '${MYSQL_VAULT_PASS}'; \
-	 GRANT CREATE USER, ALL ON {MYSQL_DB}.* TO ${MYSQL_VAULT_USER}@'${VAULT_IP}' WITH GRANT OPTION;"
+	 GRANT CREATE USER, ALL ON ${MYSQL_DB}.* TO ${MYSQL_VAULT_USER}@'${VAULT_IP}' WITH GRANT OPTION;"
 
 # configure the vault mysql secrets database
 vault mount mysql

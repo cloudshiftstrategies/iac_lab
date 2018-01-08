@@ -79,5 +79,5 @@ systemctl enable vault
 
 # Start the vault server
 #sudo -su vault vault server -config=/etc/vault/config.hcl >/tmp/vault-debug.log 2>&1 &
-export VAULT_ADDR=https://127.0.0.1:8200
+export VAULT_ADDR=http://127.0.0.1:8200
 /usr/local/bin/vault status
