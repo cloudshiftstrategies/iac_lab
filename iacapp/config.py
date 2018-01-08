@@ -12,7 +12,7 @@ FAV_ICON = 'https://chocolatey.org/content/packageimages/terraform.0.10.8.png'
 # Pages to show on the nav menu (provide a url or route)
 PAGES=[
     {'title':'Lab Blog',
-        'url':'https://www.cloudshiftstrategies.com/iaclab.html'},
+        'url':'https://www.cloudshiftstrategies.com/iacLab.html'},
     {'title':'Load Gen','route':'loadgen'},
     {'title':'Vault Credentials','route':'vault'},
     {'title':'Database','route':'database'},
