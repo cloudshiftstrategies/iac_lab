@@ -10,7 +10,12 @@ VARS="
 	VAULT_IP 
 	WEB_PROFILE_ARN" 
 
-OUTFILE=./bastion.profile
+TFDIR=~/iac_lab/terraform
+VAULTDIR=~/iac_lab/vault
+OUTFILE=${VAULTDIR}/bastion.profile
+
+cd $TFDIR
+echo $PWD
 echo "Copying terraform vars to ${OUTFILE}"
 cat /dev/null > ${OUTFILE}
 for VAR in ${VARS}; do
@@ -24,7 +29,7 @@ echo "export MYSQL_VAULT_PASS=\${MYSQL_PASS}" >> $OUTFILE
 echo "export MYSQL_VAULT_USER=vault" >> $OUTFILE
 
 export BASTION_IP=`terraform output BASTION_IP`
-export KEYFILE=`terraform output KEYFILE | sed s/.pub//`
+export KEYFILE=${TFDIR}/`terraform output KEYFILE | sed s/.pub//`
 
 echo "Adding ${KEYFILE} to local ssh agent"
 ssh-add $KEYFILE
