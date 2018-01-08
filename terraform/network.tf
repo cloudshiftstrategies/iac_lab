@@ -1,4 +1,4 @@
-# network.tf
+# network.tf – creates VPC, subnets, route tables, internet gateways and nat gateways
 
 ###############################################################
 # VPC

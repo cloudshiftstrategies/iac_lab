@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# create_s3bucket.py - creates a unique s3 bucket in which to store state file.
+# updates s3state.tf
+
 import boto3, uuid, sys, hcl
 from botocore.exceptions import ClientError
 

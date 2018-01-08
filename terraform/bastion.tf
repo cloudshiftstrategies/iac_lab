@@ -1,4 +1,4 @@
-# bastion.tf
+# bastion.tf - creates a bastion host in the default subnet with access to resources
 
 ###############################################################
 # Queries

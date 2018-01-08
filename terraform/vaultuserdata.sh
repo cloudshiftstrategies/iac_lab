@@ -1,4 +1,7 @@
 # Update all packages
+
+# vaultuserdata.sh - script used to initialize vault server
+
 yum update -y
 
 #yum install -y letsencrypt openssl libjson-pp-perl
@@ -77,7 +80,6 @@ systemctl daemon-reload
 systemctl start vault
 systemctl enable vault
 
-# Start the vault server
-#sudo -su vault vault server -config=/etc/vault/config.hcl >/tmp/vault-debug.log 2>&1 &
+# Check the vault server status
 export VAULT_ADDR=http://127.0.0.1:8200
 /usr/local/bin/vault status

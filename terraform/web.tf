@@ -1,4 +1,5 @@
-# web.tf
+# web.tf – builds load balancer, auto scaling groups, launch configs & web security groups
+
 
 #################################################
 # Web Load Balancer

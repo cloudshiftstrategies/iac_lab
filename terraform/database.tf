@@ -1,4 +1,4 @@
-# database.tf
+# database.tf - creates an RDS aurora cluster and instances
 
 # Create the database cluster
 resource "aws_rds_cluster" "rds_cluster" {

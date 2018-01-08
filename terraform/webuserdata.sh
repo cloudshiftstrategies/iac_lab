@@ -1,4 +1,5 @@
 #!/bin/bash -v
+# webuserdata.sh - script used to initialize web servers
 
 # Update all packages
 yum -y update

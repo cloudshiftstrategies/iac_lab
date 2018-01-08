@@ -1,3 +1,5 @@
+# variables.tf – commonly configured parameters for our environment (i.e. projectName)
+
 #################################################
 # AWS Region
 variable "region" {

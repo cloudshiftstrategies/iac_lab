@@ -1,4 +1,4 @@
-# peering.tf
+# vpcpeering.tf - vpc peering connection between default VPC and app vpc for bastion host access
 
 ###############################################################
 # Queries

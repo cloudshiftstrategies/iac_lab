@@ -1,5 +1,5 @@
 #!/bin/bash
-# create_sshkey.sh
+# create_sshkey.sh - creates an ssh keypair in terrafrom/ssh/ dir
 
 SSHDIR=../ssh
 PRIVATE_KEYFILE=${SSHDIR}/id_rsa

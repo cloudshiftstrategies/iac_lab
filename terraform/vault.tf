@@ -1,4 +1,4 @@
-# vault.tf
+# vault.tf - creates a vault server in the app layer subnet
 
 
 #################################################
