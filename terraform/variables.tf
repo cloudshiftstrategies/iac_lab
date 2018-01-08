@@ -26,8 +26,7 @@ variable "costCenter" {
 
 # EC2 Instances
 variable "webAmi" {
-	default = "ami-e97c548c" # AWS 2
-	#default = "ami-15e9c770" # AWS 1
+	default = "ami-e97c548c" # AWS 2 for us-east-2
 }
 variable "webInstanceType" {
 	default = "t2.micro"
@@ -60,17 +59,14 @@ variable "vpcCidr" {
 variable "publicCidrs" {
 	type = "list"
 	default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
-	#default = ["10.0.0.0/24"]
 }
 variable "appCidrs" {
 	type = "list"
 	default = ["10.0.10.0/24", "10.0.11.0/24", "10.0.12.0/24"]
-	#default = []
 }
 variable "databaseCidrs" {
 	type = "list"
 	default = ["10.0.20.0/24", "10.0.21.0/24", "10.0.22.0/24"]
-	#default = []
 }
 
 ###############################################################
@@ -78,7 +74,6 @@ variable "databaseCidrs" {
 
 variable "vaultAmi" {
 	default = "ami-e97c548c" # standard AWS Linux 2
-	# default = "ami-0e6d4c6b" # vault-consul-amazon-linux-2017-06-22T06-04-21Z
 }
 variable "vaultInstanceType" {
 	default = "t2.micro"
@@ -91,7 +86,7 @@ variable "dbRootUser" {
 	default = "root"
 }
 variable "dbRootPass" {
-	default = "password"
+	#default = "password"
 }
 variable "dbInstanceCount" {
 	default = "1"

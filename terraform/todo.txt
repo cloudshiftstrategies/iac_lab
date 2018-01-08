@@ -66,8 +66,9 @@ export MYSQL_DB=myprojectdevdb
 export MYSQL_USER=root
 export MYSQL_PASS=password
 export MYSQL_VAULT_USER=vault
-export MYSQL_VAULT_PASS=password
 export WEB_PROFILE_ARN=arn:aws:iam::561142756585:instance-profile/myproject-dev-web-profile
+
+export MYSQL_VAULT_PASS=${MYSQL_PASS}
 
 # store the database host/port information in a kv store
 vault write secret/mysql host=${MYSQL_HOST} port=${MYSQL_PORT} database=${MYSQL_DB}

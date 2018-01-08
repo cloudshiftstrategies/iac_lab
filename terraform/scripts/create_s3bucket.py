@@ -4,7 +4,7 @@ import boto3, uuid, sys, hcl
 from botocore.exceptions import ClientError
 
 # This is the file where we configure the online state
-s3StateCfgFile='./s3state.tf'
+s3StateCfgFile='../s3state.tf'
 
 bucket_prefix='terraformState_'
 statekey='tfStateFile_'

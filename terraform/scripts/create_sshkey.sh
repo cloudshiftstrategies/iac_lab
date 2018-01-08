@@ -1,5 +1,7 @@
+#!/bin/bash
+# create_sshkey.sh
 
-SSHDIR=./ssh
+SSHDIR=../ssh
 PRIVATE_KEYFILE=${SSHDIR}/id_rsa
 PUBLIC_KEYFILE=${SSHDIR}/id_rsa.pub
 

@@ -1,0 +1,11 @@
+export BASTION_IP=13.58.241.101
+export LOADBALANCER_DNS=myproject-dev-alb-587354788.us-east-2.elb.amazonaws.com
+export MYSQL_DB=myprojectdevdb
+export MYSQL_HOST=myproject-dev-rds-cluster-20180108001258842500000002.cluster-ctw6wkbqhjcx.us-east-2.rds.amazonaws.com
+export MYSQL_PASS=password
+export MYSQL_PORT=3306
+export MYSQL_USER=root
+export VAULT_IP=10.0.12.56
+export WEB_PROFILE_ARN=arn:aws:iam::561142756585:instance-profile/myproject-dev-web-profile
+export MYSQL_VAULT_PASS=${MYSQL_PASS}
+export MYSQL_VAULT_USER=vault

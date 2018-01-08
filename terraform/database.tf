@@ -12,6 +12,7 @@ resource "aws_rds_cluster" "rds_cluster" {
 	vpc_security_group_ids	= ["${aws_security_group.db_sg.id}"]
 	db_subnet_group_name	= "${aws_db_subnet_group.rds_subnet_group.name}"
 	storage_encrypted		= "true"
+	skip_final_snapshot 	= "true"
 	db_cluster_parameter_group_name = "${aws_rds_cluster_parameter_group.rds_pg.name}"
 	tags {
         Project     = "${var.projectName}"
