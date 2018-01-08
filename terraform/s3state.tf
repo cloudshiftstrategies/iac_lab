@@ -1,5 +1,3 @@
-# s3state.tf – defines where terraform should store it’s very important state file (s3)
-
 {
     "terraform": {
         "backend": {
