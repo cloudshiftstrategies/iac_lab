@@ -1,3 +1,5 @@
+#!/bin/bash -v
+
 # Update all packages
 
 # vaultuserdata.sh - script used to initialize vault server
