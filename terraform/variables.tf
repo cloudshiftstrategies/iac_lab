@@ -89,7 +89,7 @@ variable "dbRootPass" {
 	#default = "password"
 }
 variable "dbInstanceCount" {
-	default = "1"
+	default = "2"
 }
 variable "dbInstanceType" {
 	default = "db.t2.small"

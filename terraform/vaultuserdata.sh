@@ -1,3 +1,5 @@
+#!/bin/bash -v
+
 # Update all packages
 yum update -y
 
