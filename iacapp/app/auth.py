@@ -10,6 +10,12 @@ def getDbCreds(VAULT_ROLE="web-role"):
     VAULT_ADDR=""
     VAULT_NONCE=""
 
+    # Get the PKCS7 signature from this EC2 instance's metadata
+    try:
+        PKCS7 = get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
+    except:
+        return 1
+
     # Get the VAULT_NONCE ENV variable (should be set in apache SetEnv for us
     # during server build in userdata.sh)
     if environ.has_key('VAULT_NONCE'): VAULT_NONCE = environ['VAULT_NONCE']
@@ -35,9 +41,6 @@ def getDbCreds(VAULT_ROLE="web-role"):
     # Initiate a vault client
     import hvac
     vaultClient = hvac.Client(url=VAULT_ADDR)
-
-    # Get the PKCS7 signature from this EC2 instance's metadata
-    PKCS7 = get("http://169.254.169.254/latest/dynamic/instance-identity/pkcs7").text
 
 
     # Authenticate the client to vault
