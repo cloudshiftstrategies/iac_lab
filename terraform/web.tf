@@ -20,7 +20,7 @@ resource "aws_alb" "alb" {
 # The load balancer target group
 resource "aws_lb_target_group" "alb_tg" {
 	name			= "${var.projectName}-${var.stageName}-tg"
-	port			= 80
+	port			= 8000
 	protocol		= "HTTP"
 	vpc_id			= "${aws_vpc.vpc.id}"
 	tags {
@@ -235,11 +235,11 @@ resource "aws_security_group" "web_sg" {
 	}
 }
 
-# Rule to allow web servers to talk via port 80 to public (load balancer) subnet only
-resource "aws_security_group_rule" "web_sg_80in" {
+# Rule to allow web servers to talk via port 0080 to public (load balancer) subnet only
+resource "aws_security_group_rule" "web_sg_8000in" {
 	type            = "ingress"
-	from_port       = 80 
-	to_port         = 80
+	from_port       = 8000 
+	to_port         = 8000
 	protocol        = "tcp"
 	cidr_blocks		= ["${var.publicCidrs}"]
 	security_group_id = "${aws_security_group.web_sg.id}"

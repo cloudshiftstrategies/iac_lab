@@ -39,13 +39,13 @@ variable "publicSshKey" {
 
 # Autoscaling Group
 variable "tgtGrpDesiredSize" {
-	default = "2"
+	default = "1"
 }
 variable "tgtGrpMinSize" {
-	default = "2"
+	default = "1"
 }
 variable "tgtGrpMaxSize" {
-	default = "2"
+	default = "1"
 }
 variable "healthCheckGracePeriod" {
 	#default = "300" # a sane number
