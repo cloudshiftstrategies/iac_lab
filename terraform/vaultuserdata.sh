@@ -1,12 +1,8 @@
 #!/bin/bash -v
 
-# Update all packages
-
 # vaultuserdata.sh - script used to initialize vault server
 
 yum update -y
-
-#yum install -y letsencrypt openssl libjson-pp-perl
 
 # Install Vault
 wget https://releases.hashicorp.com/vault/0.9.1/vault_0.9.1_linux_amd64.zip
@@ -20,19 +16,6 @@ mkdir /etc/vault /etc/ssl/vault
 chown vault.root /etc/vault /etc/ssl/vault
 chmod 750 /etc/vault /etc/ssl/vault
 chmod 700 /usr/local/vault
-
-# get an SSL SAN Certificate
-#letsencrypt --webroot -w /home/www/vhosts/default/public -d myfirstdomain.com -d myseconddomain.com
-
-# Copy the certficates and key
-#cp -v /etc/letsencrypt/live/myfirstdomain.com/*pem /etc/ssl/vault
-#/etc/letsencrypt/live/myfirstdomain.com/cert.pem -> /etc/ssl/vault/cert.pem
-#/etc/letsencrypt/live/myfirstdomain.com/chain.pem -> /etc/ssl/vault/chain.pem
-#/etc/letsencrypt/live/myfirstdomain.com/fullchain.pem -> /etc/ssl/vault/fullchain.pem
-#/etc/letsencrypt/live/myfirstdomain.com/privkey.pem -> /etc/ssl/vault/privkey.pem
-
-# Create a combined PEM certificate
-#$ sudo cat /etc/ssl/vault/{cert,fullchain}.pem /etc/ssl/vault/fullcert.pem
 
 # Write the config to file
 cat <<EOF | sudo tee /etc/vault/config.hcl

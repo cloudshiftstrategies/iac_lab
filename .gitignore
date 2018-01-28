@@ -1,4 +1,4 @@
-terraform/.ssh
+terraform/ssh
 terraform/terraform.tfstate.backup
 terraform/.terraform
 *.pyc

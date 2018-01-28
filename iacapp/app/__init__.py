@@ -70,9 +70,11 @@ def database():
     # Now query the authors table
     query = "select * from authors;"
     cursor.execute(query)
+    data = cursor.fetchall()
+    # get the field names from the query
     num_fields = len(cursor.description)
     field_names = [i[0] for i in cursor.description]
-    data = cursor.fetchall()
+    # Render the database page template
     return render_template('database.html', query=query, data=data, field_names=field_names)
 
 @app.route("/loadgen")

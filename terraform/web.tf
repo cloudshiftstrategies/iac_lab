@@ -19,15 +19,17 @@ resource "aws_alb" "alb" {
 
 # The load balancer target group
 resource "aws_lb_target_group" "alb_tg" {
-	name			= "${var.projectName}-${var.stageName}-tg"
-	port			= 8000
+	name_prefix = "iaclab"
+	port					= 8000
 	protocol		= "HTTP"
 	vpc_id			= "${aws_vpc.vpc.id}"
 	tags {
+		Name		= "${var.projectName}-${var.stageName}-tg"
 		Project		= "${var.projectName}",
 		Stage		= "${var.stageName}"
 		CostCenter	= "${var.costCenter}"
 	}
+  lifecycle { create_before_destroy = true }
 }
 
 # The load balancer listener
@@ -45,6 +47,7 @@ resource "aws_lb_listener" "alb_listener" {
 		target_group_arn = "${aws_lb_target_group.alb_tg.arn}"
 		type             = "forward"
 	}
+  #lifecycle { create_before_destroy = true }
 }
 
 # Security Group for ALB web access
