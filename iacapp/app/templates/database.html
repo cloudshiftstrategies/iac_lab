@@ -4,16 +4,20 @@
 
 	<div class=jumbotron>
 		<h1>Database Query Test</h1>
-		<p>This page shows the authenticaed result of the query "SHOW DATABASES;"
-		Its not very interesting from an application perspective, but powerful considering
-		that the passwords to access this database are not stored on the web server.
-		</p>
+		<p>This page shows the authenticaed result of the query: <code>{{query}}</code></p>
+		<p>Its not very interesting from an application perspective, but it is a powerful
+		demonstration considering that the password to access this database is dynamically
+		created is not stored on the web server and has a short lifespan</p>
 	</div>
 	<div class=row>
 		<div class="col col-md-2"></div>
 		<div class="col col-md-8">
 			<table class="table table-striped">
-				<thead><th>Table Name</th></thead>
+				<thead>
+				{% for field_name in field_names %}
+					<th>{{field_name}}</th>
+				{% endfor %}
+				<thead>
 				<tbody>
 				{% for record in data %}
 					<tr>

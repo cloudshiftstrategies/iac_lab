@@ -23,14 +23,29 @@ def vault():
     """
     A Web Page to demonstrate vault credentials
     """
+    # put the VAULT environment variables in the data dict so that we can
+    # render them in the /vault web page
     data= {}
-    data["VAULT_NONCE"]=''
-    data["VAULT_ADDR"]=''
-    if environ.has_key('VAULT_NONCE'): data["VAULT_NONCE"] = environ['VAULT_NONCE']
+
+    # VAULT_ADDR is the http address of the VAULT Server
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
-    creds = getDbCreds()
-    testResult = dbLoginTest(creds)
-    return render_template('vault.html', data=data, creds=creds, testResult=testResult)
+    else: data["VAULT_ADDR"]='' # env var not set. write '' so tempalte will render
+
+    # VAULT_NONCE is the authentication string (password)
+    if environ.has_key('VAULT_NONCE'): data["VAULT_NONCE"] = environ['VAULT_NONCE']
+    else: data["VAULT_NONCE"]='' # env var not set. write '' so tempalte will render
+
+    # VAULT_STATUS is the error code of the initial autentication attempt
+    if environ.has_key('VAULT_STATUS'): data["VAULT_STATUS"] = environ['VAULT_STATUS']
+    else: data["VAULT_STATUS"]='' # env var not set. write '' so tempalte will render
+
+    # Call the function to get db credentials (file: auth.py function: getDbCreds())
+    dbCreds = getDbCreds()
+
+    # Call the function to test db creds(file: auth.py function: dbLoginTest())
+    testResult = dbLoginTest(dbCreds)
+
+    return render_template('vault.html', data=data, creds=dbCreds, testResult=testResult)
 
 @app.route("/database")
 def database():
@@ -47,9 +62,20 @@ def database():
         passwd=creds['db_password'],
         db    =creds['db_name'])
     cursor = db.cursor()
-    cursor.execute("SHOW DATABASES;")
+    # load the authors table so we have something to look at
+    filename="dbload.sql"
+    f = open(filename, 'r')
+    query = " ".join(f.readlines())
+    cursor.execute(query)
+    # Now query the authors table
+    query = "select * from authors;"
+    cursor.execute(query)
     data = cursor.fetchall()
-    return render_template('database.html', data=data)
+    # get the field names from the query
+    num_fields = len(cursor.description)
+    field_names = [i[0] for i in cursor.description]
+    # Render the database page template
+    return render_template('database.html', query=query, data=data, field_names=field_names)
 
 @app.route("/loadgen")
 def loadgen():
