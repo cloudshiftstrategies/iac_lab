@@ -20,7 +20,6 @@ rm -rf /var/www/html/* /tmp/iac_lab
 cd /tmp
 git clone http://github.com/peterb154/iac_lab
 cd iac_lab
-git checkout noapache
 
 # Move the web application into the web directory
 mv iacapp/* /var/www/html
