@@ -7,7 +7,7 @@ import requests, boto3, os, hvac
 if not os.environ.has_key('VAULT_ADDR'):
 	# Get the instance ID of this EC2 instance
 	instanceId = requests.get('http://169.254.169.254/latest/meta-data/instance-id').text
-	print instanceId
+	print "EC2 instanceID: %s" %instanceId
 	# Get region of this EC2 instance
 	region = requests.get('http://169.254.169.254/latest/meta-data/placement/availability-zone').text[:-1]
 	# Create a new boto3 ec2 client
@@ -19,7 +19,7 @@ if not os.environ.has_key('VAULT_ADDR'):
 		])['Tags'][0]['Value']
 	# Set the environment variable with teh vault IP address
 	os.environ['VAULT_ADDR'] = "http://%s:8200" %vaultIP
-	print "vault address: %s" %os.environ['VAULT_ADDR']
+	print "Vault address: %s" %os.environ['VAULT_ADDR']
 	
 # Log into vault and set a nonce 
 if not os.environ.has_key('VAULT_NONCE'):
@@ -36,7 +36,9 @@ if not os.environ.has_key('VAULT_NONCE'):
 		}
 	try:
 		# Attempt the login and get the nonce
-		nonce = client.auth('/v1/auth/aws-ec2/login', json=params)['auth']['metadata']['nonce']
+		response = vaultClient.auth('/v1/auth/aws-ec2/login', json=params)
+		# Extract the nonce from the api response (in json format)
+		nonce = response['auth']['metadata']['nonce']
 		# Write the env variables
 		os.environ['VAULT_NONCE'] = nonce
 		os.environ['VAULT_STATUS'] = 'authenticated'
@@ -45,8 +47,8 @@ if not os.environ.has_key('VAULT_NONCE'):
 		os.environ['VAULT_STATUS'] = '%s' %error
 		os.environ['VAULT_NONCE'] = ''
 
-	print "vault nonce: %s" %os.environ['VAULT_NONCE']
-	print "vault status: %s" %os.environ['VAULT_STATUS']
+	print "Vault nonce: %s" %os.environ['VAULT_NONCE']
+	print "Vault status: %s" %os.environ['VAULT_STATUS']
 
 # Start the web server
 app.run(debug=True,host="0.0.0.0",port=8000)
