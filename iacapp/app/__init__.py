@@ -26,6 +26,10 @@ def vault():
     # put the VAULT environment variables in the data dict so that we can
     # render them in the /vault web page
     data= {}
+    
+    # Get the host name
+    import socket
+    data['hostname'] = socket.gethostname()
 
     # VAULT_ADDR is the http address of the VAULT Server
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
