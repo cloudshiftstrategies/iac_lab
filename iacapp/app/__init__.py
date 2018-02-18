@@ -29,7 +29,7 @@ def vault():
     
     # Get the host name
     import socket
-    data['hostname'] = socket.gethostname()
+    data['HOSTNAME'] = socket.gethostname()
 
     # VAULT_ADDR is the http address of the VAULT Server
     if environ.has_key('VAULT_ADDR'): data["VAULT_ADDR"] = environ['VAULT_ADDR']
