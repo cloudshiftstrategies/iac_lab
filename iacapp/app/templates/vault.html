@@ -8,6 +8,7 @@
 		we would never post it to a web page. But in the lab, we displaying this data
 		to demonstrate how vault dynamically creates database credentials</p>
 	</div>
+	<p>HOSTNAME    : {{ data["HOSTNAME"] }} </p>
 	<p>VAULT_ADDR  : {{ data["VAULT_ADDR"] }} </p>
 	<p>VAULT_NONCE : {{ data["VAULT_NONCE"] }} </p>
 	<p>VAULT_STATUS : <span class="text-{% if data["VAULT_STATUS"] == "authenticated" %}success{% else %}danger{% endif %}">{{ data["VAULT_STATUS"] }}</span></p>
