@@ -18,7 +18,7 @@ rm -rf /var/www/html/* /tmp/iac_lab
 
 # checkout our code from github
 cd /tmp
-git clone http://github.com/peterb154/iac_lab
+git clone http://github.com/cloudshiftstrategies/iac_lab
 cd iac_lab
 
 # Move the web application into the web directory
