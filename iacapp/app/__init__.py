@@ -66,14 +66,17 @@ def database():
         passwd=creds['db_password'],
         db    =creds['db_name'])
     cursor = db.cursor()
-    # load the authors table so we have something to look at
-    filename="dbload.sql"
-    f = open(filename, 'r')
-    query = " ".join(f.readlines())
-    cursor.execute(query)
-    # Now query the authors table
-    query = "select * from authors;"
-    cursor.execute(query)
+    # see if we have a table called authors
+    showQuery = "SHOW TABLES LIKE 'authors';"
+    len(cursor.execute(showQuery).fetchall()) == 0:
+        # The authors table doesnt exist, load it with data so we have something to look at
+        filename="dbload.sql"
+        f = open(filename, 'r')
+        loadQuery = " ".join(f.readlines())
+        cursor.execute(loadQuery)
+    # query the authors table
+    selectQuery = "select * from authors;"
+    cursor.execute(selectQuery)
     data = cursor.fetchall()
     # get the field names from the query
     num_fields = len(cursor.description)
