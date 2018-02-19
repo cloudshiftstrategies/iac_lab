@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS 'authors';
 CREATE TABLE `authors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `birthdate` date NOT NULL,
   `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+);
 INSERT INTO authors (`id`, `first_name`, `last_name`, `email`, `birthdate`, `added`) VALUES (1, 'Jude', 'Mosciski', 'bmcclure@example.com', '2007-07-19', '2013-04-03 21:53:37');
 INSERT INTO authors (`id`, `first_name`, `last_name`, `email`, `birthdate`, `added`) VALUES (2, 'Lizeth', 'Beer', 'otilia.hettinger@example.net', '2004-10-14', '2016-08-12 15:34:47');
 INSERT INTO authors (`id`, `first_name`, `last_name`, `email`, `birthdate`, `added`) VALUES (3, 'Gregory', 'Kovacek', 'shakira80@example.org', '1982-03-22', '1986-07-18 20:07:10');
