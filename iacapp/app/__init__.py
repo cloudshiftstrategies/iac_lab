@@ -68,7 +68,8 @@ def database():
     cursor = db.cursor()
     # see if we have a table called authors
     showQuery = "SHOW TABLES LIKE 'authors';"
-    if len(cursor.execute(showQuery).fetchall()) == 0:
+    cursor.execute(showQuery)
+    if cursor.rowcount == 0:
         # The authors table doesnt exist, load it with data so we have something to look at
         filename="dbload.sql"
         f = open(filename, 'r')
