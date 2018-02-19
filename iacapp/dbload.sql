@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS 'authors';
+DROP TABLE IF EXISTS `authors`;
 CREATE TABLE `authors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) NOT NULL,
