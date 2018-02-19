@@ -83,7 +83,7 @@ def database():
     num_fields = len(cursor.description)
     field_names = [i[0] for i in cursor.description]
     # Render the database page template
-    return render_template('database.html', query=query, data=data, field_names=field_names)
+    return render_template('database.html', query=selectQuery, data=data, field_names=field_names)
 
 @app.route("/loadgen")
 def loadgen():
