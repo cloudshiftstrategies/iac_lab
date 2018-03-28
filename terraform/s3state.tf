@@ -2,8 +2,8 @@
     "terraform": {
         "backend": {
             "s3": {
-                "bucket": "terraform-tfstate-df270048", 
-                "key": "tfstatefile", 
+                "bucket": "tfstate-iaclab-dev", 
+                "key": "tfStateFile-iaclab-dev", 
                 "region": "us-east-2"
             }
         }

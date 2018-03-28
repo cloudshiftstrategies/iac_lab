@@ -14,7 +14,7 @@ variable "availZones" {
 # Project naming
 
 variable "projectName" {
-	default = "myproject"
+	default = "iaclab"
 }
 variable "stageName" {
 	default = "dev"
