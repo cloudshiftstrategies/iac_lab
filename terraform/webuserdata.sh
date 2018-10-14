@@ -32,6 +32,29 @@ pip install -r /var/www/html/requirements.txt
 # Remove the unnessesary (possibly insecure) libraries after the pip install done above
 yum -qqy remove gcc python-pip mysql-devel python-devel git
 
-# Start Flask server
-cd /var/www/html
-sudo -u flask python run.py &
+# Init flask log file
+touch /var/log/flask.log
+chown flask /var/log/flask.log
+
+# configure flask service
+cat <<EOF > /lib/systemd/system/flask.service
+[Unit]
+Description=Flask Web Server
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+User=flask
+Environment=LOGFILE=/var/log/flask.log
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/bin/bash -c "cd /var/www/html; python run.py >> ${LOGFILE} 2>&1"
+Wants=autossh.service
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Start the service
+systemctl daemon-reload
+service flask enable
+service flask start
