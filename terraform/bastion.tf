@@ -18,7 +18,7 @@ data "aws_subnet_ids" "default_subnets" {
 
 # Create a bastion host living in the first subnet of the default vpc
 resource "aws_instance" "bastion" {
-   ami             = "${var.webAmi}"
+   ami             = "${data.aws_ami.awsLinux2Ami.id}"
    instance_type   = "t2.micro"
    subnet_id       = "${data.aws_subnet_ids.default_subnets.ids[0]}"
    key_name        = "${aws_key_pair.public_key.key_name}"
