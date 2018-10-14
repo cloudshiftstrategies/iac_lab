@@ -80,7 +80,7 @@ resource "aws_security_group" "alb_sg" {
 # Create a launch configuration 
 resource "aws_launch_configuration" "web_lc" {
 	name_prefix			= "${var.projectName}-${var.stageName}-lc-"
-	image_id			= "${var.webAmi}"
+	image_id			= "${data.aws_ami.awsLinux2Ami.id}"
 	security_groups		= ["${aws_security_group.web_sg.id}"]
 	instance_type		= "${var.webInstanceType}"
 	iam_instance_profile = "${aws_iam_instance_profile.web_profile.name}"
