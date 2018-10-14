@@ -56,5 +56,5 @@ EOF
 
 # Start the service
 systemctl daemon-reload
-service flask enable
-service flask start
+systemctl enable flask
+systemctl start flask
