@@ -27,9 +27,6 @@ variable "costCenter" {
 # web/app servers
 
 # EC2 Instances
-variable "webAmi" {
-	default = "ami-e97c548c" # AWS 2 for us-east-2
-}
 variable "webInstanceType" {
 	default = "t2.micro"
 }
@@ -74,9 +71,6 @@ variable "databaseCidrs" {
 ###############################################################
 # Vault Server
 
-variable "vaultAmi" {
-	default = "ami-e97c548c" # standard AWS Linux 2
-}
 variable "vaultInstanceType" {
 	default = "t2.micro"
 }
@@ -98,4 +92,22 @@ variable "dbInstanceType" {
 }
 variable "dbBackupRetention" {
 	default = "7"
+}
+
+##############################################################
+# Data Lookups
+data "aws_ami" "awsLinux2Ami" {
+	most_recent = true
+	filter {
+		name = "owner-alias"
+		values = ["amazon"]
+	}
+	filter {
+		name = "name"
+		values = ["amzn2-ami-*-x86_64-gp2"]
+	}
+	filter {
+		name = "virtualization-type"
+		values = ["hvm"]
+	}
 }
