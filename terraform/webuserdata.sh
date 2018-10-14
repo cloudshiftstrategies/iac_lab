@@ -44,11 +44,10 @@ After=network.target
 StartLimitIntervalSec=0
 [Service]
 User=flask
-Environment=LOGFILE=/var/log/flask.log
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=/bin/bash -c "cd /var/www/html; python run.py >> ${LOGFILE} 2>&1"
+ExecStart=/bin/bash -c "cd /var/www/html; python run.py >> /var/log/flask.log 2>&1"
 Wants=autossh.service
 [Install]
 WantedBy=multi-user.target
