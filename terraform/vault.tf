@@ -6,7 +6,7 @@
 
 # Create a vault host living one of the app subnets
 resource "aws_instance" "vault" {
-	ami             = "${var.vaultAmi}"
+	ami             = "${data.aws_ami.awsLinux2Ami.id}"
 	instance_type   = "t2.micro"
 	# I dont really care which app subnet it lands in, just trying to match diagrams
 	# TODO: should not hard set subnet instance to 2, its brittle... 
