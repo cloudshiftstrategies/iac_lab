@@ -1,4 +1,3 @@
-
 #!/bin/bash -v
 
 # vaultuserdata.sh - script used to initialize vault server
