@@ -10,7 +10,7 @@ yum update -y
 # Note, consul running in single mode (non clustered mode and will not have persistent storage
 
 # Install Vault
-wget https://releases.hashicorp.com/vault/0.11.3/vault_0.10.3_linux_amd64.zip
+wget https://releases.hashicorp.com/vault/0.11.3/vault_0.11.3_linux_amd64.zip
 unzip -j vault_*_linux_amd64.zip -d /usr/local/bin
 # Install Consul
 wget https://releases.hashicorp.com/consul/1.2.0/consul_1.2.0_linux_amd64.zip
