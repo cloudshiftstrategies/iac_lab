@@ -1,4 +1,1 @@
-1. Configure AWS account credentials
-
-2. run ./create_bucket.py
-
+<https://www.cloudshiftstrategies.com/cloud-shift-labs/infrastructure-code-secrets-management/>
